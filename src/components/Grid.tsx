@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Square from "./Square";
 
@@ -23,12 +23,13 @@ function Grid() {
   const [isGameOver, setGameOver] = useState(false);
   const [flags, setFlags] = useState(0);
 
-  const isGameWin =
+  const isGameWon =
     gameState.filter((state) => state.status !== "revealed").length <=
-    bombAmount;
+      bombAmount ||
+    !gameState.some((state) => state.bomb && state.status !== "flagged");
 
   const onClickSquare = async (id: number) => {
-    if (gameState[id].status === "hidden" && !isGameOver && !isGameWin) {
+    if (gameState[id].status === "hidden" && !isGameOver && !isGameWon) {
       if (gameState[id].bomb) {
         setGameState(
           gameState.map((state) => ({
@@ -47,15 +48,14 @@ function Grid() {
 
   const onChangeFlag = (ev: any, id: number) => {
     ev.preventDefault();
-    if (!isGameOver && !isGameWin && gameState[id].status !== "revealed") {
+    if (!isGameOver && gameState[id].status !== "revealed") {
       let newGameState = [...gameState];
       if (gameState[id].status === "flagged") {
         newGameState[id].status = "hidden";
-        console.log("try to hide", newGameState[id].status);
         setFlags(flags - 1);
         return setGameState(newGameState);
       }
-      if (gameState[id].status === "hidden") {
+      if (gameState[id].status === "hidden" && flags < bombAmount) {
         newGameState[id].status = "flagged";
         setFlags(flags + 1);
         return setGameState(newGameState);
@@ -63,16 +63,19 @@ function Grid() {
     }
   };
   useEffect(() => {
-    if (isGameWin && gameState.length > 0 && !isGameOver) {
+    if (isGameWon && gameState.length > 0 && !isGameOver) {
       setGameOver(true);
       setGameState(
         gameState.map((state) => ({
           ...state,
-          status: state.bomb ? "revealed" : state.status,
+          status:
+            state.bomb && state.status !== "flagged"
+              ? "revealed"
+              : state.status,
         }))
       );
     }
-  });
+  }, [isGameWon, gameState, isGameOver]);
   const checkSquare = async (id: number, gameState: GameStateType[]) => {
     const isLeftEdge = id % width === 0;
     const isRightEdge = id % width === width - 1;
@@ -169,9 +172,11 @@ function Grid() {
   };
   useEffect(() => {
     createGameState();
+    // eslint-disable-next-line
   }, []);
+
   const resetBoard = () => {
-    if (isGameOver || isGameWin) {
+    if (isGameOver || isGameWon) {
       setGameOver(false);
       setFlags(0);
       createGameState();
@@ -193,7 +198,7 @@ function Grid() {
           />
         ))}
       </Wrapper>
-      {isGameOver ? (isGameWin ? "Congratulation" : "Game Over ") : ""}
+      {isGameOver ? (isGameWon ? "Congratulation" : "Game Over ") : ""}
     </div>
   );
 }

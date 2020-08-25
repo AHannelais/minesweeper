@@ -13,7 +13,7 @@ function Square({ bomb, id, status, total, onClick, onChangeFlag }: Props) {
     <div
       style={{
         backgroundColor:
-          status == "revealed" ? (bomb ? "orange" : "green") : "grey",
+          status === "revealed" ? (bomb ? "orange" : "green") : "grey",
         textAlign: "center",
       }}
       onClick={() => onClick(id)}

@@ -185,6 +185,7 @@ function Grid() {
 
   return (
     <div onClick={resetBoard}>
+      Settings
       <Wrapper width={width} height={height}>
         {gameState.map((squareState, index) => (
           <Square

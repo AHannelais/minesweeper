@@ -37,6 +37,11 @@ function Settings({
         onChangeHeight(isHorrizontal ? 20 : 29);
         onChangeWidth(isHorrizontal ? 29 : 20);
         break;
+      case "expert":
+        onChangeBombAmount(230);
+        onChangeHeight(isHorrizontal ? 26 : 38);
+        onChangeWidth(isHorrizontal ? 38 : 26);
+        break;
       default:
         break;
     }
@@ -64,6 +69,13 @@ function Settings({
         }}
       >
         Hard
+      </button>
+      <button
+        onClick={() => {
+          onChangeDifficulty("expert");
+        }}
+      >
+        Expert
       </button>
       <button onClick={resetBoard}>Reset</button>
     </div>

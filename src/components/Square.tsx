@@ -80,12 +80,16 @@ interface WrapperProps {
 const Wrapper = styled.div`
   height: ${(p: WrapperProps) => `${p.unit}px`};
   width: ${(p: WrapperProps) => `${p.unit}px`};
+  font-family: "Roboto Mono", monospace;
   font-size: ${(p: WrapperProps) => `${p.unit / 2}px`};
   box-sizing: border-box;
   background-color: ${(p: WrapperProps) => p.backgroundColor};
   color: ${(p: WrapperProps) => p.textColor};
   text-align: center;
-  border: ${(p: WrapperProps) => (p.borderColor === "#9c998d" ? "2px" : "5px")}
+  border: ${(p: WrapperProps) =>
+      p.borderColor === "#9c998d"
+        ? `${(2 * p.unit) / 50}px`
+        : `${p.unit / 10}px`}
     solid;
   border-color: ${(p: WrapperProps) => p.borderColor};
 `;

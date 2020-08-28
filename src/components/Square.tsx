@@ -5,12 +5,21 @@ interface Props {
   id: number;
   bomb: boolean;
   total: number;
+  unit: number;
   status: "hidden" | "revealed" | "flagged";
   onClick: (id: number) => void;
   onChangeFlag: (ev: any, id: number) => void;
 }
 
-function Square({ bomb, id, status, total, onClick, onChangeFlag }: Props) {
+function Square({
+  bomb,
+  id,
+  status,
+  total,
+  onClick,
+  onChangeFlag,
+  unit,
+}: Props) {
   const getBackgroundColor = () => {
     if (status === "revealed") {
       if (bomb) return "orange";
@@ -46,6 +55,7 @@ function Square({ bomb, id, status, total, onClick, onChangeFlag }: Props) {
       backgroundColor={getBackgroundColor()}
       textColor={getTextColor()}
       borderColor={getBorderColor()}
+      unit={unit}
       onClick={() => onClick(id)}
       onContextMenu={(ev) => onChangeFlag(ev, id)}
     >
@@ -64,12 +74,13 @@ interface WrapperProps {
   backgroundColor: string;
   textColor: string;
   borderColor: string;
+  unit: number;
 }
 
 const Wrapper = styled.div`
-  height: 50px;
-  width: 50px;
-  font-size: 25px;
+  height: ${(p: WrapperProps) => `${p.unit}px`};
+  width: ${(p: WrapperProps) => `${p.unit}px`};
+  font-size: ${(p: WrapperProps) => `${p.unit / 2}px`};
   box-sizing: border-box;
   background-color: ${(p: WrapperProps) => p.backgroundColor};
   color: ${(p: WrapperProps) => p.textColor};

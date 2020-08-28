@@ -1,4 +1,6 @@
 import React from "react";
+const isHorrizontal = window.innerWidth > window.innerHeight ? true : false;
+
 interface Props {
   width: number;
   height: number;
@@ -22,18 +24,18 @@ function Settings({
     switch (newDifficulty) {
       case "easy":
         onChangeBombAmount(10);
-        onChangeHeight(8);
-        onChangeWidth(11);
+        onChangeHeight(isHorrizontal ? 8 : 11);
+        onChangeWidth(isHorrizontal ? 11 : 8);
         break;
       case "normal":
         onChangeBombAmount(39);
-        onChangeHeight(14);
-        onChangeWidth(20);
+        onChangeHeight(isHorrizontal ? 14 : 20);
+        onChangeWidth(isHorrizontal ? 20 : 14);
         break;
       case "hard":
         onChangeBombAmount(102);
-        onChangeHeight(20);
-        onChangeWidth(29);
+        onChangeHeight(isHorrizontal ? 20 : 29);
+        onChangeWidth(isHorrizontal ? 29 : 20);
         break;
       default:
         break;

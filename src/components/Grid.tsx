@@ -3,6 +3,8 @@ import styled from "styled-components";
 import Square from "./Square";
 import Settings from "./Settings";
 
+const isHorrizontal = window.innerWidth > window.innerHeight ? true : false;
+
 interface GameStateType {
   bomb: boolean;
   total: number;
@@ -17,14 +19,28 @@ function useForceUpdate() {
 
 function Grid() {
   const forceUpdate = useForceUpdate();
-  const [width, setWidth] = useState(8);
-  const [height, setHeight] = useState(10);
-  const [bombAmount, setBombAmount] = useState(15);
+  const [width, setWidth] = useState(isHorrizontal ? 20 : 14);
+  const [height, setHeight] = useState(isHorrizontal ? 14 : 20);
+  const [bombAmount, setBombAmount] = useState(39);
   const [gameState, setGameState] = useState<GameStateType[]>([]);
   const [isGameOver, setGameOver] = useState(false);
   const [isGameWon, setGameWon] = useState(false);
   const [isFistClick, setFirstClick] = useState(true);
   const [flags, setFlags] = useState(0);
+  console.log("width ratio", (window.innerWidth / width) * 0.95);
+  console.log("height ration", (window.innerHeight / height) * 0.85);
+  const toTest =
+    (window.innerWidth / width) * 0.95 < (window.innerHeight / height) * 0.85
+      ? "width"
+      : "heigth";
+  const unit =
+    toTest === "width"
+      ? width * 50 < window.innerWidth * 0.95
+        ? 50
+        : (window.innerWidth * 0.95) / width
+      : height * 50 < window.innerHeight * 0.85
+      ? 50
+      : (window.innerHeight * 0.85) / height;
 
   // eslint-disable-next-line
   useEffect(() => {
@@ -247,7 +263,12 @@ function Grid() {
       <span style={{ verticalAlign: "middle" }}>
         Total Bombs : {bombAmount}
       </span>
-      <Wrapper width={width} height={height} onClick={onClickResetBoard}>
+      <Wrapper
+        width={width}
+        height={height}
+        unit={unit}
+        onClick={onClickResetBoard}
+      >
         {gameState.map((squareState, index) => (
           <Square
             key={index}
@@ -255,6 +276,7 @@ function Grid() {
             status={squareState.status}
             total={squareState.total}
             id={index}
+            unit={unit}
             onClick={onClickSquare}
             onChangeFlag={onChangeFlag}
           />
@@ -270,16 +292,15 @@ export default Grid;
 interface WrapperProps {
   height: number;
   width: number;
+  unit: number;
 }
 
 const Wrapper = styled.div`
-  height: ${(p: WrapperProps) => `${p.height * 50}px`};
-  width: ${(p: WrapperProps) => `${p.width * 50}px`};
+  height: ${(p: WrapperProps) => `${p.height * p.unit}px`};
+  width: ${(p: WrapperProps) => `${p.width * p.unit}px`};
   display: flex;
   flex-wrap: wrap;
   background-color: #dcd6bc;
-  margin-left: 50px;
-  margin-top: 20px;
+  margin: auto 0;
   border: 10px solid #dcd6bc;
-  margin-bottom: 10px;
 `;

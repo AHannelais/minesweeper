@@ -11,8 +11,20 @@ interface Props {
 }
 
 function Square({ bomb, id, status, total, onClick, onChangeFlag }: Props) {
-  const backgroundColor =
-    status === "revealed" ? (bomb ? "orange" : "wheat") : "grey";
+  const getBackgroundColor = () => {
+    if (status === "revealed") {
+      if (bomb) return "orange";
+      return "#cecab7";
+    }
+    return "default";
+  };
+  const getBorderColor = () => {
+    if (status === "revealed") {
+      if (bomb) return "#f5f3eb #bab7a9 #bab7a9 #fff9db";
+      return "#9c998d";
+    }
+    return "#f5f3eb #bab7a9 #bab7a9 #fff9db";
+  };
 
   const getTextColor = () => {
     if (status === "flagged") return "default";
@@ -31,14 +43,16 @@ function Square({ bomb, id, status, total, onClick, onChangeFlag }: Props) {
   };
   return (
     <Wrapper
-      backgroundColor={backgroundColor}
+      backgroundColor={getBackgroundColor()}
       textColor={getTextColor()}
+      borderColor={getBorderColor()}
       onClick={() => onClick(id)}
       onContextMenu={(ev) => onChangeFlag(ev, id)}
     >
       <span style={{ verticalAlign: "middle" }}>
         {status === "revealed" && !bomb && total ? total : ""}
-        {status === "flagged" ? "F" : ""}
+        {status === "flagged" ? "🚩" : ""}
+        {status === "revealed" && bomb ? "💣" : ""}
       </span>
     </Wrapper>
   );
@@ -49,14 +63,18 @@ export default Square;
 interface WrapperProps {
   backgroundColor: string;
   textColor: string;
+  borderColor: string;
 }
 
 const Wrapper = styled.div`
-  height: 40px;
-  width: 40px;
+  height: 50px;
+  width: 50px;
+  font-size: 25px;
+  box-sizing: border-box;
   background-color: ${(p: WrapperProps) => p.backgroundColor};
   color: ${(p: WrapperProps) => p.textColor};
   text-align: center;
+  border: ${(p: WrapperProps) => (p.borderColor === "#9c998d" ? "2px" : "5px")}
+    solid;
+  border-color: ${(p: WrapperProps) => p.borderColor};
 `;
-//  {status === "revealed" && !bomb && total ? total : ""}
-//  {status === "flagged" ? "F" : ""}

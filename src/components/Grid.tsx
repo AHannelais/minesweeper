@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Square from "./Square";
+import Settings from "./Settings";
 
 interface GameStateType {
   bomb: boolean;
@@ -68,7 +69,7 @@ function Grid() {
   };
 
   const alwayClickEmptyOnFirstClick = async (id: number) => {
-    let newGameState = await createGameState();
+    let newGameState = gameState;
     while (
       newGameState.length <= 0 ||
       newGameState[id].total !== 0 ||
@@ -202,26 +203,51 @@ function Grid() {
     return newGameState;
   };
   useEffect(() => {
-    createGameState();
+    resetBoard();
     // eslint-disable-next-line
-  }, []);
+  }, [height, width, bombAmount]);
 
   const resetBoard = () => {
+    setGameOver(false);
+    setGameWon(false);
+    setFirstClick(true);
+    setFlags(0);
+    createGameState();
+  };
+  const onClickResetBoard = () => {
     if (isGameOver || isGameWon) {
-      setGameOver(false);
-      setGameWon(false);
-      setFirstClick(true);
-      setFlags(0);
-      createGameState();
+      resetBoard();
     }
+  };
+  const onChangeWidth = async (newWidth: number) => {
+    setWidth(newWidth);
+    forceUpdate();
+  };
+  const onChangeHeight = (newHeight: number) => {
+    setHeight(newHeight);
+  };
+  const onChangeBombAmount = (newBombAmount: number) => {
+    setBombAmount(newBombAmount);
+    forceUpdate();
+  };
+
+  const settingsProps = {
+    width,
+    height,
+    bombAmount,
+    onChangeBombAmount,
+    onChangeHeight,
+    onChangeWidth,
+    resetBoard,
   };
 
   return (
     <div>
+      <Settings {...settingsProps} />
       <span style={{ verticalAlign: "middle" }}>
         Total Bombs : {bombAmount}
       </span>
-      <Wrapper width={width} height={height} onClick={resetBoard}>
+      <Wrapper width={width} height={height} onClick={onClickResetBoard}>
         {gameState.map((squareState, index) => (
           <Square
             key={index}
@@ -247,15 +273,13 @@ interface WrapperProps {
 }
 
 const Wrapper = styled.div`
-  height: ${(p: WrapperProps) => `${p.height * 40}px`};
-  width: ${(p: WrapperProps) => `${p.width * 40}px`};
+  height: ${(p: WrapperProps) => `${p.height * 50}px`};
+  width: ${(p: WrapperProps) => `${p.width * 50}px`};
   display: flex;
   flex-wrap: wrap;
-  div {
-    height: 40px;
-    width: 40px;
-  }
+  background-color: #dcd6bc;
+  margin-left: 50px;
+  margin-top: 20px;
+  border: 10px solid #dcd6bc;
+  margin-bottom: 10px;
 `;
-/*
-
- */

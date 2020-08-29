@@ -260,8 +260,12 @@ function Grid() {
   return (
     <div>
       <Settings {...settingsProps} />
-      <span style={{ verticalAlign: "middle" }}>
-        Total Bombs : {bombAmount}
+      <span style={{ verticalAlign: "middle", fontSize: "30px" }}>
+        🚩 : {bombAmount - flags}{" "}
+      </span>
+
+      <span style={{ verticalAlign: "middle", color: "grey" }}>
+        PC : right click | Mobile : long touch
       </span>
       <Wrapper
         width={width}

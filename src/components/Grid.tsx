@@ -263,7 +263,6 @@ function Grid() {
       <span style={{ verticalAlign: "middle", fontSize: "30px" }}>
         🚩 : {bombAmount - flags}{" "}
       </span>
-
       <span style={{ verticalAlign: "middle", color: "grey" }}>
         PC : right click | Mobile : long touch
       </span>

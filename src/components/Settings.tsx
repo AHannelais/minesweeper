@@ -1,6 +1,6 @@
 import React from "react";
 const isHorrizontal = window.innerWidth > window.innerHeight ? true : false;
-
+import styled from "styled-components";
 interface Props {
   width: number;
   height: number;
@@ -49,37 +49,63 @@ function Settings({
 
   return (
     <div>
-      <button
+      <Button
         onClick={() => {
           onChangeDifficulty("easy");
         }}
       >
         Easy
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => {
           onChangeDifficulty("normal");
         }}
       >
         Normal
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => {
           onChangeDifficulty("hard");
         }}
       >
         Hard
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => {
           onChangeDifficulty("expert");
         }}
       >
         Expert
-      </button>
-      <button onClick={resetBoard}>Reset</button>
+      </Button>
+      <Button onClick={resetBoard}>Reset</Button>
     </div>
   );
 }
 
 export default Settings;
+const Button = styled.button`
+  .myButton {
+    box-shadow: inset 0px 1px 0px 0px #ffffff;
+    background: linear-gradient(to bottom, #ededed 5%, #dfdfdf 100%);
+    background-color: #ededed;
+    border-radius: 6px;
+    border: 1px solid #dcdcdc;
+    display: inline-block;
+    cursor: pointer;
+    color: #777777;
+    font-family: Arial;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 10px 24px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #ffffff;
+    :hover {
+      background: linear-gradient(to bottom, #dfdfdf 5%, #ededed 100%);
+      background-color: #dfdfdf;
+    }
+    :active {
+      position: relative;
+      top: 1px;
+    }
+  }
+`;

@@ -98,6 +98,7 @@ const Button = styled.button`
     font-weight: bold;
     padding: 10px 24px;
     text-decoration: none;
+    margin : 10px
     text-shadow: 0px 1px 0px #ffffff;
     :hover {
       background: linear-gradient(to bottom, #dfdfdf 5%, #ededed 100%);

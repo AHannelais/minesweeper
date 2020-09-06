@@ -27,10 +27,9 @@ function Grid() {
   const [isGameWon, setGameWon] = useState(false);
   const [isFistClick, setFirstClick] = useState(true);
   const [flags, setFlags] = useState(0);
-  console.log("width ratio", (window.innerWidth / width) * 0.95);
-  console.log("height ration", (window.innerHeight / height) * 0.85);
+
   const toTest =
-    (window.innerWidth / width) * 0.95 < (window.innerHeight / height) * 0.85
+    (window.innerWidth / width) * 0.95 < (window.innerHeight / height) * 0.8
       ? "width"
       : "heigth";
   const unit =
@@ -38,9 +37,9 @@ function Grid() {
       ? width * 50 < window.innerWidth * 0.95
         ? 50
         : (window.innerWidth * 0.95) / width
-      : height * 50 < window.innerHeight * 0.85
+      : height * 50 < window.innerHeight * 0.8
       ? 50
-      : (window.innerHeight * 0.85) / height;
+      : (window.innerHeight * 0.8) / height;
 
   // eslint-disable-next-line
   useEffect(() => {
@@ -260,12 +259,19 @@ function Grid() {
   return (
     <div>
       <Settings {...settingsProps} />
-      <span style={{ verticalAlign: "middle", fontSize: "30px" }}>
-        🚩 : {bombAmount - flags}{" "}
-      </span>
-      <span style={{ verticalAlign: "middle", color: "grey" }}>
-        PC : right click | Mobile : long touch
-      </span>
+      <p
+        style={{
+          textAlign: "right",
+        }}
+      >
+        <span style={{ verticalAlign: "middle", fontSize: "30px" }}>
+          🚩 : {bombAmount - flags}{" "}
+        </span>
+        <span style={{ verticalAlign: "middle", color: "grey" }}>
+          PC : right click | Mobile : long touch
+        </span>
+      </p>
+
       <Wrapper
         width={width}
         height={height}
@@ -285,7 +291,9 @@ function Grid() {
           />
         ))}
       </Wrapper>
-      {isGameOver ? "Game Over " : isGameWon ? "Congratulation" : ""}
+      <Title>
+        {isGameOver ? "Game Over " : isGameWon ? "Congratulation" : ""}
+      </Title>
     </div>
   );
 }
@@ -306,4 +314,14 @@ const Wrapper = styled.div`
   background-color: #dcd6bc;
   margin: auto 0;
   border: 10px solid #dcd6bc;
+`;
+const Title = styled.h3`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 70px;
+  transform: translate(-50%, -50%);
+  -webkit-text-stroke-width: 3px;
+  -webkit-text-stroke-color: #fff;
 `;
